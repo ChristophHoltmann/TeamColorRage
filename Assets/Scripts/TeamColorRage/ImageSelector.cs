@@ -1,4 +1,6 @@
 using com.mukarillo.prominentcolor;
+using Oculus.Interaction;
+using Oculus.Interaction.Surfaces;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -28,11 +30,15 @@ public class ImageSelector : MonoBehaviour
                 colorSpheres.Add(ics.GetComponent<MeshRenderer>());
 
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.AddComponent<BoxCollider>();
+        var collider = spriteRenderer.AddComponent<BoxCollider>();
+        
+        var surface = GetComponent<ColliderSurface>();
+        surface.InjectCollider(collider);
     }
 
     public void ShowImageOnScreen()
     {
+        Debug.Log("ShowImageOnScreen called");
         screen.transform.localScale = new Vector3(screen.transform.localScale.x,
             GetImageRatio() * screen.transform.localScale.x, screen.transform.localScale.z);
         screen.material.mainTexture = spriteRenderer.sprite.texture;
