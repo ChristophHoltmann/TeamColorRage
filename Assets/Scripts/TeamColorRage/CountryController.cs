@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CountryController : MonoBehaviour
@@ -8,20 +7,13 @@ public class CountryController : MonoBehaviour
     CountryTravelData _travelData;
 
     TripController _travelTripPrefab;
+    TripController _travelTripInstance;
 
     private bool activeOnStart = false;
 
     Coroutine lerpRotationCorountine = null;
 
     LodMeshLoader lodMeshLoader = null;
-
-    private void Update()
-    {
-        if (_travelData && _travelData.countryName == "India" && Input.GetKeyDown(KeyCode.I))
-        {
-            ShowCountry(true);
-        }
-    }
 
     public void Initialize(Country country, CountryTravelData travelData, TripController travelTripPrefab)
     {
@@ -51,13 +43,20 @@ public class CountryController : MonoBehaviour
 
     public void ShowTrip(TripData tripData)
     {
-        var tripController = Instantiate(this._travelTripPrefab, transform);
-        tripController.Initialize(tripData);
+        _travelTripInstance = Instantiate(this._travelTripPrefab, transform);
+        _travelTripInstance.Initialize(tripData);
     }
 
     public void ShowCountry(bool show)
     {
-        lodMeshLoader?.Rotate(_travelData.countryUpRotation);
+        if (_travelTripInstance)
+        {
+            _travelTripInstance.ShowLocations(show);
+            _travelTripInstance.ShowImages(show);
+        }
+        if (show)
+            lodMeshLoader?.Rotate(_travelData.countryUpRotation);
+
         gameObject.SetActive(show);
     }
     public void ShowIfWasActiveOnStart()
