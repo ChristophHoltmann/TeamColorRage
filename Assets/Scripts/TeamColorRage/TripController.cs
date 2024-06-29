@@ -6,6 +6,8 @@ public class TripController : MonoBehaviour
 {
     TripData _tripData;
 
+    Trip _tripObject;
+
     public void Initialize(TripData tripData)
     {
         this._tripData = tripData;
@@ -15,17 +17,32 @@ public class TripController : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
+
+        // Show specific prefab
+        _tripObject = Instantiate(_tripData.tripInformation.tripPrefab, transform);
+        //_spline = _tripObject.GetComponentInChildren<ObiRope>();
+        //ClearSplineNodes();
+
+        ShowLocations(true);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void ClearSplineNodes()
     {
-
+        //for (int i = _spline.path.points.Count; i >= 0; i--)
+        //    _spline.path.RemoveControlPoint(i);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowLocations(bool show)
     {
+        _tripObject.locationsParent.gameObject.SetActive(show);
+        if (show == false) return;
 
+        var locations = _tripObject.locationsParent.GetComponentsInChildren<Transform>();
+        ClearSplineNodes();
+        foreach (var location in locations)
+        {
+            //_spline.path.AddControlPoint(location.position, location.forward, -location.forward, location.up, 1, 1, 1, 0, Color.white, location.name);
+            //_spline.AddNode(new SplineNode(location.position, location.rotation.eulerAngles));
+        }
     }
 }

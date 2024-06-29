@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [Serializable]
-public class TripPosition
+public class TripInformation
 {
-    public Transform position;
+    public Trip tripPrefab;
+
     public List<Image> images;
 }
 
@@ -15,12 +16,5 @@ public class TripPosition
 public class TripData : ScriptableObject
 {
     public string tripName;
-    public Transform position;
-
-
-
-    public void ShowTrip()
-    {
-
-    }
+    public TripInformation tripInformation;
 }

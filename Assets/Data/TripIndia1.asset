@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: TripIndia1
   m_EditorClassIdentifier: 
   tripName: Nice Trip
-  position: {fileID: 0}
+  tripInformation:
+    tripPrefab: {fileID: 7796391013079904889, guid: 3f3a4c6800e1a084e867b089151bf093,
+      type: 3}
+    images: []
