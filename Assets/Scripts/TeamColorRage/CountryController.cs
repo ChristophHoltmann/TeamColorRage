@@ -11,9 +11,22 @@ public class CountryController : MonoBehaviour
 
     private bool activeOnStart = false;
 
+    Coroutine lerpRotationCorountine = null;
+
+    LodMeshLoader lodMeshLoader = null;
+
+    private void Update()
+    {
+        if (_travelData && _travelData.countryName == "India" && Input.GetKeyDown(KeyCode.I))
+        {
+            ShowCountry(true);
+        }
+    }
+
     public void Initialize(Country country, CountryTravelData travelData, TripController travelTripPrefab)
     {
         activeOnStart = gameObject.activeSelf;
+        lodMeshLoader = transform.parent.GetComponent<LodMeshLoader>();
 
         this._country = country;
         this._travelData = travelData;
@@ -26,6 +39,16 @@ public class CountryController : MonoBehaviour
             }
     }
 
+    private IEnumerator LerpRotation(float lerpTime, Quaternion endRotation)
+    {
+        var startRotation = transform.rotation;
+        for (float t = 0f; t < lerpTime; t += Time.deltaTime)
+        {
+            transform.rotation = Quaternion.Lerp(startRotation, endRotation, t / lerpTime);
+            yield return null;
+        }
+    }
+
     public void ShowTrip(TripData tripData)
     {
         var tripController = Instantiate(this._travelTripPrefab, transform);
@@ -34,6 +57,7 @@ public class CountryController : MonoBehaviour
 
     public void ShowCountry(bool show)
     {
+        lodMeshLoader?.Rotate(_travelData.countryUpRotation);
         gameObject.SetActive(show);
     }
     public void ShowIfWasActiveOnStart()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Seb.Meshing;
 using System.Linq;
+using UnityEngine.Events;
 
 public class LodMeshLoader : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class LodMeshLoader : MonoBehaviour
     public List<CountryTravelData> countryTravelDatas;
 
     public TripController travelTripPrefab;
+
+    public UnityEvent OnRendersCreated = null;
 
     void Start()
     {
@@ -104,10 +107,13 @@ public class LodMeshLoader : MonoBehaviour
         transform.position = globePosition.position;
         transform.rotation = globePosition.rotation;
         transform.localScale = Vector3.one * globePosition.localScale.x;
+
+        OnRendersCreated?.Invoke();
         return meshRenderers;
     }
 
     Coroutine lerpPositionCorountine = null;
+    Coroutine lerpRotationCorountine = null;
     Coroutine lerpScaleCorountine = null;
 
     public void SwapToGlobeMode()
@@ -127,6 +133,12 @@ public class LodMeshLoader : MonoBehaviour
             StopCoroutine(lerpScaleCorountine);
         lerpScaleCorountine = StartCoroutine(LerpScale(swapGlobeMapTime, Vector3.one * scale));
     }
+    public void Rotate(Vector3 rotation)
+    {
+        if (lerpRotationCorountine != null)
+            StopCoroutine(lerpRotationCorountine);
+        lerpRotationCorountine = StartCoroutine(LerpRotation(1f, rotation));
+    }
 
     private IEnumerator LerpPosition(float lerpTime, Transform endPosition)
     {
@@ -136,6 +148,15 @@ public class LodMeshLoader : MonoBehaviour
         {
             transform.position = Vector3.Lerp(startPosition, endPosition.position, t / lerpTime);
             transform.rotation = Quaternion.Lerp(startRotation, endPosition.rotation, t / lerpTime);
+            yield return null;
+        }
+    }
+    private IEnumerator LerpRotation(float lerpTime, Vector3 rotation)
+    {
+        var startRotation = transform.localRotation;
+        for (float t = 0f; t < lerpTime; t += Time.deltaTime)
+        {
+            transform.rotation = Quaternion.Lerp(startRotation, Quaternion.Euler(rotation), t / lerpTime);
             yield return null;
         }
     }
