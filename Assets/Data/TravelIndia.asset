@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: TravelIndia
   m_EditorClassIdentifier: 
   countryName: India
+  countryUpRotation: {x: 10.607, y: -0.275, z: 68.132}
   trips:
   - {fileID: 11400000, guid: b67e375a910c83f4386222ae7ddf5622, type: 2}

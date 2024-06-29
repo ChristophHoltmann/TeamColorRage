@@ -7,6 +7,8 @@ public class CountryTravelData : ScriptableObject
 {
     public string countryName;
 
+    public Vector3 countryUpRotation = Vector3.zero;    
+
     public List<TripData> trips = new List<TripData>();
 
     public void ShowTrips()
