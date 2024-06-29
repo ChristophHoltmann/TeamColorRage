@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cb3d3477e91b5d4ab0419209c9875f6
+guid: 3e6ab6e8f57fae343960ed4f5c6c2213
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,23 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: A
-    second: {fileID: 2100000, guid: c5963732f844ee44a848172efd9dd10b, type: 2}
+      name: Black
+    second: {fileID: 2100000, guid: ac4e849104ce5f7408a5009f05c66ac9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: B
-    second: {fileID: 2100000, guid: c5963732f844ee44a848172efd9dd10b, type: 2}
+      name: Flamingo
+    second: {fileID: 2100000, guid: 6b9d7457d257f04459ab74d532fab8f1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: C
-    second: {fileID: 2100000, guid: 2f5766a763b3bfc41a4ba6bddc2dd788, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Flaps
-    second: {fileID: 2100000, guid: 7edd81bd024b6094f9568c7542b2ddd2, type: 2}
+      name: Golden
+    second: {fileID: 2100000, guid: 2910b433aad210e4b97ad55ac50495b5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -65,7 +60,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 0
+    nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -121,8 +116,8 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 0
-  remapMaterialsIfMaterialImportModeIsNone: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
