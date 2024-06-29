@@ -23,7 +23,8 @@ public class TripController : MonoBehaviour
         //_spline = _tripObject.GetComponentInChildren<ObiRope>();
         //ClearSplineNodes();
 
-        ShowLocations(true);
+        ShowLocations(false);
+        ShowImages(false);
     }
 
     private void ClearSplineNodes()
@@ -32,6 +33,11 @@ public class TripController : MonoBehaviour
         //    _spline.path.RemoveControlPoint(i);
     }
 
+    public void ShowImages(bool show)
+    {
+        _tripObject.imageParent.gameObject.SetActive(show);
+
+    }
     public void ShowLocations(bool show)
     {
         _tripObject.locationsParent.gameObject.SetActive(show);
