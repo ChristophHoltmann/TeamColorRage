@@ -1,49 +1,111 @@
 using Meta.XR.MRUtilityKit;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SceneSetup : MonoBehaviour
 {
+    enum PlacingState
+    {
+        None,
+        Placing,
+        Rotating,
+        Placed,
+    }
+
     [SerializeField] private GameObject mapPrefab;
-    private GameObject livePreview;
-    private bool currentlyPlacingAnchor = false;
+    private GameObject mapPreview;
+    [SerializeField] private GameObject noHitPrefab;
+    private GameObject noHitPreview;
+
+    private PlacingState currentPlacingState;
+
+    private Vector3 placingGesturePosition;
 
     //https://www.youtube.com/watch?v=bSYoRoIVvvo
+    [SerializeField] private OVRHand rightHand;
     [SerializeField] private Transform rayStartPoint;
     [SerializeField] private float rayLength = 5.0f;
-    [SerializeField] private MRUKAnchor.SceneLabels labelFilter;
+
+    [SerializeField] private UnityEvent onPlaced;
 
     private void Start()
     {
-        livePreview = Instantiate(mapPrefab);
-        livePreview.SetActive(false);
-    }
+        mapPreview = Instantiate(mapPrefab);
+        mapPreview.SetActive(false);
 
-    private void OnMRSceneLoaded()
-    {
-        //enable some kind of continuous raycast
-        currentlyPlacingAnchor = true;
+        noHitPreview = Instantiate(noHitPrefab);
+        noHitPreview.SetActive(false);
+
+        currentPlacingState = PlacingState.Placing;
+
+        if (onPlaced == null)
+        {
+            onPlaced = new UnityEvent();
+        }
     }
 
     private void Update()
     {
-        if (!currentlyPlacingAnchor) return;
-
-        Ray ray = new Ray(rayStartPoint.position, rayStartPoint.forward);
-
-        MRUKRoom room = MRUK.Instance.GetCurrentRoom();
-        bool hasHit = room.Raycast(ray, rayLength, LabelFilter.Included(labelFilter), out RaycastHit hit, out MRUKAnchor anchor);
-
-        if (hasHit)
+        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
         {
-            Vector3 hitPoint = hit.point;
+            currentPlacingState = PlacingState.Placing;
+        }
 
-            livePreview.SetActive(true);
-            livePreview.transform.position = hitPoint;
+        if (currentPlacingState == PlacingState.None || currentPlacingState == PlacingState.Placed) return;
+
+        if (currentPlacingState == PlacingState.Placing)
+        {
+            RaycastHit hit;
+            bool hasHit = Physics.Raycast(rayStartPoint.position, -rayStartPoint.right, out hit, rayLength, LayerMask.GetMask("Placeable"));
+
+            if (hasHit)
+            {
+                Vector3 hitPoint = hit.point;
+
+                noHitPreview.SetActive(false);
+
+                mapPreview.SetActive(true);
+                mapPreview.transform.position = hitPoint;
+
+                if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Index))
+                {
+                    currentPlacingState = PlacingState.Rotating;
+                    placingGesturePosition = rightHand.transform.position;
+                    return;
+                }
+            }
+            else
+            {
+                mapPreview.SetActive(false);
+                noHitPreview.SetActive(true);
+                noHitPreview.transform.position = rayStartPoint.position + (-rayStartPoint.right * rayLength);
+            }
+        }
+
+        if (currentPlacingState == PlacingState.Rotating)
+        {
+            var currentHandPosition = rightHand.transform.position;
+            var currentOffset = currentHandPosition - placingGesturePosition;
+            currentOffset.y = 0;
+
+            float rotationAngle = Mathf.Atan2(currentOffset.x, currentOffset.z) * Mathf.Rad2Deg;
+
+            Quaternion rotation = Quaternion.Euler(0f, rotationAngle, 0f);
+
+            mapPreview.transform.rotation = rotation;
+
+            if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
+            {
+                currentPlacingState = PlacingState.Placed;
+                //replace preview with actual map
+                return;
+            }
         }
     }
 
-    private void OnMRAnchorPlaced()
+    private void OnDrawGizmos()
     {
-        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(rayStartPoint.position, rayStartPoint.position + (-rayStartPoint.right * .25f));
     }
 }
