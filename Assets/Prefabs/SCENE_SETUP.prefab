@@ -151,7 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55a41a3dd415a9418cc32ec92fa69d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapPrefab: {fileID: 7130636819421828040, guid: 851cafdfbc23fb946bed7b7203e4522e,
+  mapPreviewPrefab: {fileID: 7130636819421828040, guid: 851cafdfbc23fb946bed7b7203e4522e,
+    type: 3}
+  interactableWorldPrefab: {fileID: 8033826683383816332, guid: f6877b9df0c0d864d9d4bf8e246f0ed5,
     type: 3}
   noHitPrefab: {fileID: 7130636819421828040, guid: 67451f762fc84fe468e63724707df912,
     type: 3}

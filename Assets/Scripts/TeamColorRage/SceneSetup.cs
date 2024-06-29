@@ -12,8 +12,9 @@ public class SceneSetup : MonoBehaviour
         Placed,
     }
 
-    [SerializeField] private GameObject mapPrefab;
+    [SerializeField] private GameObject mapPreviewPrefab;
     private GameObject mapPreview;
+    [SerializeField] private GameObject interactableWorldPrefab;
     [SerializeField] private GameObject noHitPrefab;
     private GameObject noHitPreview;
 
@@ -30,7 +31,7 @@ public class SceneSetup : MonoBehaviour
 
     private void Start()
     {
-        mapPreview = Instantiate(mapPrefab);
+        mapPreview = Instantiate(mapPreviewPrefab);
         mapPreview.SetActive(false);
 
         noHitPreview = Instantiate(noHitPrefab);
@@ -46,7 +47,7 @@ public class SceneSetup : MonoBehaviour
 
     private void Update()
     {
-        if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
+        if (currentPlacingState != PlacingState.Placed && rightHand.GetFingerIsPinching(OVRHand.HandFinger.Pinky))
         {
             currentPlacingState = PlacingState.Placing;
         }
@@ -97,15 +98,12 @@ public class SceneSetup : MonoBehaviour
             if (rightHand.GetFingerIsPinching(OVRHand.HandFinger.Middle))
             {
                 currentPlacingState = PlacingState.Placed;
-                //replace preview with actual map
+                mapPreview.SetActive(false);
+                Instantiate(interactableWorldPrefab, mapPreview.transform.position, mapPreview.transform.rotation);
+
+                onPlaced.Invoke();
                 return;
             }
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(rayStartPoint.position, rayStartPoint.position + (-rayStartPoint.right * .25f));
     }
 }
