@@ -6,18 +6,19 @@ public class InteractionTest : MonoBehaviour
     [SerializeField] private Material selectedMaterial;
     [SerializeField] private Material unselectedMaterial;
 
-    private ISelector selector;
+    [SerializeField] private IndexPinchSafeReleaseSelector selector;
+//[SerializeField] private RayInteractable interactable;
 
-    private Renderer rend;
+    [SerializeField] private Renderer rend;
 
     void Start()
     {
-        selector = GetComponent<ISelector>();
+        if (selector is null) selector = GetComponent<IndexPinchSafeReleaseSelector>();
 
         selector.WhenSelected += Selector_WhenSelected;
         selector.WhenUnselected += Selector_WhenUnselected;
         
-        rend = GetComponent<Renderer>();
+        if (rend is null) rend = GetComponent<Renderer>();
     }
 
     private void Selector_WhenSelected()
