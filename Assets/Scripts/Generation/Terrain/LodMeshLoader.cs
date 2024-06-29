@@ -14,6 +14,7 @@ public class LodMeshLoader : MonoBehaviour
     public Material lowResMat;
     public bool useStaticBatching;
     public bool loadOnStart;
+    public bool showMesh = true;
     public SimpleLodSystem lodSystem;
 
     //public float globeScale = 0.01f;
@@ -48,21 +49,23 @@ public class LodMeshLoader : MonoBehaviour
         {
             SwapToMapMode();
         }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            ShowCountryInMapMode("India");
+        }
     }
 
     public void Load()
     {
-        MeshRenderer[] highResRenderers = CreateRenderers(meshFileHighRes, mat);
+        //MeshRenderer[] highResRenderers = CreateRenderers(meshFileHighRes, mat);
         MeshRenderer[] lowResRenderers = CreateRenderers(meshFileLowRes, lowResMat);
 
-        Debug.Assert(highResRenderers.Length == lowResRenderers.Length, "Mismatch in number of high and low res meshes");
+        //Debug.Assert(highResRenderers.Length == lowResRenderers.Length, "Mismatch in number of high and low res meshes");
 
-        for (int i = 0; i < highResRenderers.Length; i++)
-        {
-            lodSystem.AddLOD(highResRenderers[i], lowResRenderers[i]);
-        }
-
-
+        //for (int i = 0; i < highResRenderers.Length; i++)
+        //{
+        //    lodSystem.AddLOD(highResRenderers[i], lowResRenderers[i]);
+        //}
     }
 
     MeshRenderer[] CreateRenderers(TextAsset loadFile, Material material)
@@ -77,6 +80,7 @@ public class LodMeshLoader : MonoBehaviour
             var renderObject = MeshHelper.CreateRendererObject(meshData[i].name, meshData[i], material, parent: transform, gameObject.layer);
 
             meshRenderers[i] = renderObject.renderer;
+            renderObject.renderer.enabled = showMesh;
             allObjects[i] = renderObject.gameObject;
             renderObject.gameObject.transform.localPosition = Vector3.zero;
             renderObject.gameObject.transform.localRotation = Quaternion.identity;
@@ -115,6 +119,15 @@ public class LodMeshLoader : MonoBehaviour
     Coroutine lerpPositionCorountine = null;
     Coroutine lerpRotationCorountine = null;
     Coroutine lerpScaleCorountine = null;
+
+    public void ShowCountryInMapMode(string countryName)
+    {
+        var countryController = countries.FirstOrDefault(c => c.name.Equals(countryName));
+        if (countryController == null) return;
+
+        SwapToMapMode();
+        ShowCountry(countryController);
+    }
 
     public void SwapToGlobeMode()
     {

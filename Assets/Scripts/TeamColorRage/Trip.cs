@@ -6,5 +6,5 @@ public class Trip : MonoBehaviour
 {
     public Transform locationsParent;
 
-
+    public Transform imageParent;
 }
