@@ -57,7 +57,7 @@ public class CountryController : MonoBehaviour
         if (show)
             lodMeshLoader?.Rotate(_travelData.countryUpRotation);
 
-        gameObject.SetActive(show);
+        //gameObject.SetActive(show);
     }
     public void ShowIfWasActiveOnStart()
     {

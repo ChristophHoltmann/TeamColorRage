@@ -31,6 +31,8 @@ public class LodMeshLoader : MonoBehaviour
 
     public UnityEvent OnRendersCreated = null;
 
+    private CountryController currentShownCountry = null;
+
     void Start()
     {
         if (loadOnStart)
@@ -132,6 +134,12 @@ public class LodMeshLoader : MonoBehaviour
     public void SwapToGlobeMode()
     {
         SwapMode(globePosition, globePosition.localScale.x);
+
+        if(currentShownCountry != null)
+        {
+            currentShownCountry.ShowCountry(false);
+            currentShownCountry = null;
+        }
     }
     public void SwapToMapMode()
     {
@@ -201,5 +209,6 @@ public class LodMeshLoader : MonoBehaviour
     public void ShowCountry(CountryController country)
     {
         country.ShowCountry(true);
+        currentShownCountry = country;
     }
 }
