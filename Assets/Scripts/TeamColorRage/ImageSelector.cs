@@ -34,6 +34,8 @@ public class ImageSelector : MonoBehaviour
 
         var surface = GetComponent<ColliderSurface>();
         surface.InjectCollider(collider);
+
+        sphereColor.a = 0.25f;
     }
 
     public void ShowImageOnScreen()
