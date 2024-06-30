@@ -36,10 +36,11 @@ public class TripController : MonoBehaviour
     public void ShowImages(bool show)
     {
         _tripObject.imageParent.gameObject.SetActive(show);
-
     }
     public void ShowLocations(bool show)
     {
+        if (_tripObject.flag) _tripObject.flag.gameObject.SetActive(!show);
+
         _tripObject.locationsParent.gameObject.SetActive(show);
         if (show == false) return;
 
