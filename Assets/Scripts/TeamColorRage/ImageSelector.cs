@@ -23,28 +23,28 @@ public class ImageSelector : MonoBehaviour
 
     void Start()
     {
-        screen = FindObjectOfType<ImageScreen>()?.GetComponent<MeshRenderer>();
-        var imageColorSpheres = FindObjectsOfType<ImageColorSphere>();
+        screen = FindObjectOfType<ImageScreen>(true)?.GetComponent<MeshRenderer>();
+        var imageColorSpheres = FindObjectsOfType<ImageColorSphere>(true);
         if (imageColorSpheres != null)
             foreach (var ics in imageColorSpheres)
                 colorSpheres.Add(ics.GetComponent<MeshRenderer>());
 
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
         var collider = spriteRenderer.AddComponent<BoxCollider>();
-        
+
         var surface = GetComponent<ColliderSurface>();
         surface.InjectCollider(collider);
     }
 
     public void ShowImageOnScreen()
     {
-        Debug.Log("ShowImageOnScreen called");
         screen.transform.localScale = new Vector3(screen.transform.localScale.x,
             GetImageRatio() * screen.transform.localScale.x, screen.transform.localScale.z);
         screen.material.mainTexture = spriteRenderer.sprite.texture;
 
         if (colorSpheres != null && colorSpheres.Count > 0 && spriteRenderer?.sprite?.texture != null)
         {
+            colorSpheres[0].transform.parent.gameObject.SetActive(true);
             //var colors = ProminentColor.GetColors32FromImage(spriteRenderer.sprite.texture, 1, 50f, 30, 3f);
             colorSpheres.ForEach(ics => ics.material.color = sphereColor);
         }
