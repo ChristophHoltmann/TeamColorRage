@@ -159,6 +159,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3870052497744802529}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e6ab6e8f57fae343960ed4f5c6c2213,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3735876091077322619}
   m_SourcePrefab: {fileID: 100100000, guid: 3e6ab6e8f57fae343960ed4f5c6c2213, type: 3}
 --- !u!4 &5827441536938699365 stripped
 Transform:
@@ -379,3 +383,18 @@ MonoBehaviour:
   _whenSelectingInteractorViewRemoved:
     m_PersistentCalls:
       m_Calls: []
+--- !u!111 &3735876091077322619
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6599158424219824351}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 34e35d3e3c2906042b37c65011408e8c, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 1
